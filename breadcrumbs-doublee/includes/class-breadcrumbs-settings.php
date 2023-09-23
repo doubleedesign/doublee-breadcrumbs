@@ -41,6 +41,7 @@ class Breadcrumbs_Settings {
 
 	/**
 	 * Create the breadcrumbs setting in the wp_options table
+     * @wp-hook
 	 */
 	public function create_settings_in_db() {
 		add_option('breadcrumbs_settings', '');
@@ -49,32 +50,50 @@ class Breadcrumbs_Settings {
 
 	/**
 	 * Filterable list of all the post types to add settings for
-	 * @since    1.0.0
+	 * @since    1.1.0
+     * @wp-hook
 	 */
 	public function get_breadcrumbable_post_types() {
 
 		// Get all post types in the site
 		$post_types = get_post_types();
 
-		// Unset the ones we know we won't be adding breadcrumbs to, like ACF groups and nav menu items.
-		unset($post_types['attachment']);
-		unset($post_types['revision']);
-		unset($post_types['nav_menu_item']);
-		unset($post_types['custom_css']);
-		unset($post_types['customize_changeset']);
-		unset($post_types['oembed_cache']);
-		unset($post_types['user_request']);
-		unset($post_types['wp_block']);
-		unset($post_types['acf-field']);
-		unset($post_types['acf-field-group']);
+		// Specify the ones we know we won't be adding breadcrumbs to,
+        // like ACF groups, nav menu items, block editor stuff, and some WooCommerce stuff.
+		$exclude = array(
+            'attachment',
+            'revision',
+            'wp_navigation',
+            'nav_menu_item',
+            'wp_global_styles',
+            'custom_css',
+            'customize_changeset',
+            'wp_template',
+            'wp_template_part',
+            'oembed_cache',
+            'user_request',
+            'wp_block',
+            'acf-field',
+            'acf-field-group',
+            'acf-post-type',
+            'acf-taxonomy',
+            'acf-ui-options-page',
+            'product_variation',
+            'shop_order',
+            'shop_order_refund',
+            'shop_order_placehold',
+            'shop_coupon',
+            'scheduled-action',
+        );
 
 		// Return list with the opportunity for themes to alter it with this filter
-		return apply_filters('breadcrumbs_filter_post_types', $post_types);
+		return apply_filters('breadcrumbs_filter_post_types', array_diff($post_types, $exclude));
 	}
 
 	/**
 	 * Filterable list of all the the taxonomies to add settings for
 	 * @since    1.0.0
+     * @wp-hook
 	 */
 	public function get_breadcrumbable_taxonomies() {
 

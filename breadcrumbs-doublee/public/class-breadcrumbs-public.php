@@ -22,6 +22,7 @@ class Breadcrumbs_Public extends Breadcrumbs_Settings {
 	/**
 	 * Populate the breadcrumb array
 	 * @since    1.0.0
+     * @wp-hook
 	 */
 	public function set_breadcrumbs() {
 
@@ -77,12 +78,19 @@ class Breadcrumbs_Public extends Breadcrumbs_Settings {
 	 * @since    1.0.0
 	 */
 	private function get_page_trail() {
+        $settings = get_option('breadcrumbs_settings');
 
 		// Check if the page has ancestors, and add those to the trail
 		$page_ancestors = get_ancestors(get_the_id(), 'page');
 		foreach($page_ancestors as $ancestor_id) {
 			$this->add_breadcrumb(get_the_title($ancestor_id), get_the_permalink($ancestor_id));
 		}
+
+        // Add shop page to trail for WooCommerce pages if the setting says so
+        if(class_exists('woocommerce') && $settings['woocommerce-pages'] === 'shop_page' && ((is_cart() || is_checkout() || is_account_page() || is_wc_endpoint_url()))) {
+            $shop = get_option('woocommerce_shop_page_id');
+            $this->add_breadcrumb(get_the_title($shop), get_the_permalink($shop));
+        }
 
 		// Add the page title, with no link
 		$page_title_override = get_post_meta(get_the_id(), 'breadcrumb_title_override', true);
@@ -220,29 +228,28 @@ class Breadcrumbs_Public extends Breadcrumbs_Settings {
 	 * @return mixed|void
 	 */
 	private function get_output() {
-		$output = '';
 
-		$output .= '<ol class="breadcrumbs-list" vocab="https://schema.org/" typeof="BreadcrumbList">';
-			foreach($this->get_breadcrumbs() as $index => $item) {
-				if($item['url']) {
-					$output .= '
-						<li class="breadcrumbs-list__item" property="itemListElement" typeof="ListItem">
-							<a class="breadcrumbs-list__item__link" property="item" typeof="WebPage" href="' . $item['url'] . '">
-						        <span class="breadcrumbs-list__item__link__label" property="name">' . $item['title'] . '</span>
-					        </a>
-					        <meta property="position" content="' . $index . '">
-						</li>
-					';
-				}
-				else {
-					$output .= '
-						<li class="breadcrumbs-list__item" property="itemListElement" typeof="ListItem">
-						    <span class="breadcrumbs-list__item__label" property="name">' . $item['title'] . '</span>
-					        <meta property="position" content="' . $index . '">
-						</li>
-					';
-				}
-			}
+        $output = '<ol class="breadcrumbs-list" vocab="https://schema.org/" typeof="BreadcrumbList">';
+        foreach($this->get_breadcrumbs() as $index => $item) {
+            if($item['url']) {
+                $output .= '
+                    <li class="breadcrumbs-list__item" property="itemListElement" typeof="ListItem">
+                        <a class="breadcrumbs-list__item__link" property="item" typeof="WebPage" href="' . $item['url'] . '">
+                            <span class="breadcrumbs-list__item__link__label" property="name">' . $item['title'] . '</span>
+                        </a>
+                        <meta property="position" content="' . $index . '">
+                    </li>
+                ';
+            }
+            else {
+                $output .= '
+                    <li class="breadcrumbs-list__item" property="itemListElement" typeof="ListItem">
+                        <span class="breadcrumbs-list__item__label" property="name">' . $item['title'] . '</span>
+                        <meta property="position" content="' . $index . '">
+                    </li>
+                ';
+            }
+        }
 		$output .= '</ol>';
 
 		// Return output with the opportunity for themes to alter it with this filter

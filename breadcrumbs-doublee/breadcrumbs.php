@@ -16,7 +16,7 @@ if ( ! defined( 'WPINC' ) ) {
 /**
  * Current plugin version.
  */
-define( 'BREADCRUMBS_VERSION', '1.0.0' );
+define( 'BREADCRUMBS_VERSION', '1.1.0' );
 
 /**
  * The code that runs during plugin activation.

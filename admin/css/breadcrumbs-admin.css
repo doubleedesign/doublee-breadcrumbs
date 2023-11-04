@@ -1,0 +1,55 @@
+/** Admin screen */
+.breadcrumbs-admin {
+    box-sizing: border-box;
+    padding: 10px 20px 20px 0;
+}
+
+.breadcrumbs-admin__group {
+    padding: 1rem;
+    margin: 1rem 0;
+    border: 1px solid #CCC;
+}
+
+.breadcrumbs-admin__group legend {
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.breadcrumbs-admin__group h2 {
+    margin-top: 2rem;
+}
+
+.breadcrumbs-admin__group h2:first-of-type {
+    margin-top: 0;
+}
+
+.breadcrumbs-admin__group h3 {
+    margin-bottom: 0;
+}
+
+.breadcrumbs-admin__group h3 + p {
+    margin-top: 5px;
+}
+
+.breadcrumbs-admin__group .form-table--alt th,
+.breadcrumbs-admin__group .form-table--alt td {
+    padding: 5px 5px 5px 0;
+}
+
+.breadcrumbs-admin__group .form-table--alt th {
+    width: 160px;
+}
+
+.breadcrumbs-admin__group .form-table--alt td select {
+    width: 200px;
+}
+
+.breadcrumbs-admin__group .button {
+    margin-top: 1rem;
+}
+
+
+/** Post metabox **/
+#breadcrumb-settings.postbox input {
+    width: 100%;
+}

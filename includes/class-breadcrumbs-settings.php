@@ -83,6 +83,8 @@ class Breadcrumbs_Settings {
             'shop_order_refund',
             'shop_order_placehold',
             'shop_coupon',
+            'event_ticket',
+            'event_ticket_email',
             'scheduled-action',
         );
 

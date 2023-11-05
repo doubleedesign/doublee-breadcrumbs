@@ -116,6 +116,13 @@ class Breadcrumbs_Public extends Breadcrumbs_Settings {
 				$this->add_breadcrumb($archive_title, $archive_url);
 			}
 		}
+        // Add shop page to trail for WooCommerce products if the setting says so
+        else if(class_exists('woocommerce') && $post_type === 'product') {
+            if($settings['woocommerce-products'] === 'shop_page') {
+                $shop = get_option('woocommerce_shop_page_id');
+                $this->add_breadcrumb(get_the_title($shop), get_the_permalink($shop));
+            }
+        }
 		// Otherwise, show CPT archive link if has_archive is set on that post type
 		else {
 			$object = get_post_type_object($post_type);

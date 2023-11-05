@@ -54,6 +54,31 @@ $current_settings = get_option('breadcrumbs_settings');
 					</td>
 				</tr>
 			<?php } ?>
+            <?php
+            if (class_exists('woocommerce')) { ?>
+                <tr>
+                    <th scope="row">
+                        <label for="woocommerce-pages-select">WooCommerce pages <small style="display: block; font-style: italic; font-weight: normal;">Account, Cart, Checkout etc</small></label>
+                    </th>
+                    <td>
+                        <select id="woocommerce-pages-select" name="woocommerce-pages">
+                            <option value="" <?php echo $current_settings['woocommerce-pages'] === '' ? 'selected' : ''?>>No extra predecessor</option>
+                            <option value="shop_page" <?php echo $current_settings['woocommerce-pages'] === 'shop_page' ? 'selected' : ''?>>Shop page</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">
+                        <label for="woocommerce-products-select">Products</label>
+                    </th>
+                    <td>
+                        <select id="woocommerce-products-select" name="woocommerce-products">
+                            <option value="" <?php echo $current_settings['woocommerce-products'] === '' ? 'selected' : ''?>>No extra predecessor</option>
+                            <option value="shop_page" <?php echo $current_settings['woocommerce-products'] === 'shop_page' ? 'selected' : ''?>>Include link to shop page</option>
+                        </select>
+                    </td>
+                </tr>
+            <?php } ?>
 		</table>
 
 		<input type="hidden" name="page" value="breadcrumbs"/>
@@ -72,11 +97,11 @@ $current_settings = get_option('breadcrumbs_settings');
 		<ul>
 			<li>
 				<h3><code>breadcrumbs_filter_post_types</code></h3>
-				<p>Add or remove post types that have breadcrumbs. Takes one parameter, an array of post types as per the result of WordPress&rsquo;s <code>get_post_types().</code></p>
+				<p>Add or remove post types that have breadcrumbs. Takes one parameter, an array of post types as per the result of WordPress&rsquo;s <code>get_post_types()</code>.</p>
 			</li>
 			<li>
 				<h3><code>breadcrumbs_filter_taxonomies</code></h3>
-				<p>Add or remove taxonomies that have breadcrumbs. Takes one parameter, an array of taxonomies as per the result of WordPress&rsquo;s <code>get_taxonomies().</code></p>
+				<p>Add or remove taxonomies that have breadcrumbs. Takes one parameter, an array of taxonomies as per the result of WordPress&rsquo;s <code>get_taxonomies()</code>.</p>
 			</li>
 			<li>
 				<h3><code>breadcrumbs_filter_output</code></h3>
@@ -86,6 +111,7 @@ $current_settings = get_option('breadcrumbs_settings');
 
 		<h2>Post-level settings</h2>
 		<p>Titles shown in the breadcrumbs can be overridden at the post level.</p>
+        <p>If you are hiding the last item with CSS or don't want the title editable for another reason, you can remove the metabox using something like this in your theme:<br/> <code>remove_meta_box('breadcrumb-settings', array('page', 'post', 'product'), 'side');</code></p>
 
 	</fieldset>
 </form>

@@ -5,11 +5,10 @@
  *
  * @since      1.0.0
  * @package    Breadcrumbs
- * @subpackage Breadcrumbs/admin/partials
  */
 
-$post_types = $this->get_breadcrumbable_post_types();
-$taxonomies = $this->get_breadcrumbable_taxonomies();
+$post_types = Breadcrumbs_Settings::get_breadcrumbable_post_types();
+$taxonomies = Breadcrumbs_Settings::get_breadcrumbable_taxonomies();
 $current_settings = get_option('breadcrumbs_settings');
 ?>
 
@@ -19,7 +18,8 @@ $current_settings = get_option('breadcrumbs_settings');
 	<fieldset class="breadcrumbs-admin__group">
 		<legend>Settings</legend>
 		<h2>Taxonomy to use in breadcrumb trail for single posts</h2>
-		<p>If The SEO Framework is active on this site, the post's primary term of the taxonomy selected below will be used. Otherwise, the first term will be used.</p>
+		<p>If The SEO Framework or Yoast SEO is active on this site, the post's primary term of the taxonomy selected
+			below will be used. Otherwise, the first term will be used.</p>
 		<table class="form-table form-table--alt" role="presentation">
 			<?php
 			foreach($post_types as $post_type) {

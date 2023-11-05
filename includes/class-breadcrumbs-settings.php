@@ -4,56 +4,17 @@
  *
  * @since      1.0.0
  * @package    Breadcrumbs
- * @subpackage Breadcrumbs/admin
  */
 class Breadcrumbs_Settings {
 
-	/**
-	 * The unique identifier of this plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   protected
-	 * @var      string    $plugin_name    The string used to uniquely identify this plugin.
-	 */
-	protected $plugin_name;
-
-	/**
-	 * The current version of the plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   protected
-	 * @var      string    $version    The current version of the plugin.
-	 */
-	protected $version;
-
-	/**
-	 * Initialize the class
-	 * @param $plugin_name
-	 * @param $version
-	 *
-	 * @since    1.0.0
-	 */
-	public function __construct($plugin_name, $version) {
-		$this->plugin_name = $plugin_name;
-		$this->version = $version;
+	public function __construct() {
 	}
-
-
-	/**
-	 * Create the breadcrumbs setting in the wp_options table
-     * @wp-hook
-	 */
-	public function create_settings_in_db() {
-		add_option('breadcrumbs_settings', '');
-	}
-
 
 	/**
 	 * Filterable list of all the post types to add settings for
-	 * @since    1.1.0
-     * @wp-hook
+	 * @since    1.2.0
 	 */
-	public function get_breadcrumbable_post_types() {
+	public static function get_breadcrumbable_post_types() {
 
 		// Get all post types in the site
 		$post_types = get_post_types();
@@ -92,12 +53,12 @@ class Breadcrumbs_Settings {
 		return apply_filters('breadcrumbs_filter_post_types', array_diff($post_types, $exclude));
 	}
 
+
 	/**
 	 * Filterable list of all the the taxonomies to add settings for
-	 * @since    1.0.0
-     * @wp-hook
+	 * @since    1.2.0
 	 */
-	public function get_breadcrumbable_taxonomies() {
+	public static function get_breadcrumbable_taxonomies() {
 
 		// Get all taxonomies in the site
 		$taxonomies = get_taxonomies();

@@ -7,149 +7,110 @@
  *
  * @since      1.0.0
  * @package    Breadcrumbs
- * @subpackage Breadcrumbs/includes
  */
 class Breadcrumbs {
 
 	/**
-	 * The loader that's responsible for maintaining and registering all hooks that power
-	 * the plugin.
+	 * Set up the core functionality of the plugin in the constructor
+	 * by loading the modular classes of functionality.
 	 *
-	 * @since    1.0.0
-	 * @access   protected
-	 * @var      Breadcrumbs_Loader    $loader    Maintains and registers all hooks for the plugin.
-	 */
-	protected $loader;
-
-	/**
-	 * The unique identifier of this plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   protected
-	 * @var      string    $plugin_name    The string used to uniquely identify this plugin.
-	 */
-	protected $plugin_name;
-
-	/**
-	 * The current version of the plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   protected
-	 * @var      string    $version    The current version of the plugin.
-	 */
-	protected $version;
-
-	/**
-	 * Define the core functionality of the plugin.
-	 *
-	 * Set the plugin name and the plugin version that can be used throughout the plugin.
-	 * Load the dependencies, define the locale, and set the hooks for the admin area and
-	 * the public-facing side of the site.
-	 *
-	 * @since    1.0.0
+	 * @since    1.2.0
 	 */
 	public function __construct() {
-		$this->version     = defined('BREADCRUMBS_VERSION') ? BREADCRUMBS_VERSION : '1.0.0';
-		$this->plugin_name = 'breadcrumbs';
-
-		$this->load_dependencies();
-		$this->define_admin_hooks();
-		$this->define_public_hooks();
+		$this->load_classes();
 	}
 
+
 	/**
-	 * Load the required dependencies for this plugin,
-	 * and create an instance of the loader which will be used to register the hooks with WordPress.
+	 * Load the required dependencies for this plugin.
+	 * Each time we create a class file, we need to add it and initialise it here.
 	 *
-	 * @since    1.0.0
+	 * @return   void
+	 * @since    1.2.0
 	 * @access   private
 	 */
-	private function load_dependencies() {
-
-		// The class responsible for orchestrating the core plugin hooks and filters
-		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-breadcrumbs-loader.php';
+	private function load_classes(): void {
 
 		// The class responsible for plugin-wide settings; parent class for the Admin and Public classes
 		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-breadcrumbs-settings.php';
+		new Breadcrumbs_Settings();
 
 		// The class responsible for defining actions that occur in the admin area
-		require_once plugin_dir_path(dirname(__FILE__)) . 'admin/class-breadcrumbs-admin.php';
+		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-breadcrumbs-admin.php';
+		new Breadcrumbs_Admin();
 
 		// The class responsible for defining actions that occur on the front-end
-		require_once plugin_dir_path(dirname(__FILE__)) . 'public/class-breadcrumbs-public.php';
-
-		// Initialise the loader
-		$this->loader = new Breadcrumbs_Loader();
+		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-breadcrumbs-public.php';
+		new Breadcrumbs_Public();
 	}
 
+
 	/**
-	 * Register all of the hooks related to the admin area functionality
-	 * @since    1.0.0
-	 * @access   private
+	 * Run functions on plugin activation.
+	 * Things we only want to run once - when the plugin is activated
+	 * (as opposed to every time the admin initialises, for example)
+	 * @return void
 	 */
-	private function define_admin_hooks() {
-
-		$plugin_settings = new Breadcrumbs_Settings($this->plugin_name, $this->version);
-		$this->loader->add_action('admin_init', $plugin_settings, 'create_settings_in_db');
-
-		$plugin_admin = new Breadcrumbs_Admin($this->plugin_name, $this->version);
-		$this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles');
-		$this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts');
-		$this->loader->add_action('admin_menu', $plugin_admin, 'add_options_screen');
-		$this->loader->add_action('add_meta_boxes', $plugin_admin, 'register_post_meta_boxes');
-		$this->loader->add_action('save_post', $plugin_admin, 'save_post_breadcrumbs_metadata');
+	public static function activate(): void {
+		add_option('breadcrumbs_settings');
 	}
 
-	/**
-	 * Register all of the hooks related to the front-end functionality
-	 * @since    1.0.0
-	 * @access   private
-	 */
-	private function define_public_hooks() {
-
-		$plugin_public = new Breadcrumbs_Public($this->plugin_name, $this->version);
-		$this->loader->add_action('doublee_breadcrumbs', $plugin_public, 'set_breadcrumbs', 10);
-		$this->loader->add_action('doublee_breadcrumbs', $plugin_public, 'display_breadcrumbs', 10);
-	}
 
 	/**
-	 * Run the loader to execute all of the hooks with WordPress.
+	 * Run functions on plugin deactivation.
+	 * NOTE: This can be a destructive operation!
+	 * Basically anything done by the plugin should be reversed or adjusted to work with built-in WordPress functionality
+	 * if the plugin is deactivated. However, it is important to note that often developers/administrators will
+	 * deactivate a plugin temporarily to troubleshoot something and then reactivate it, so we should not do a full cleanup
+	 * (such as deleting data) by default.
 	 *
-	 * @since    1.0.0
+	 * Consider carefully whether deactivation or uninstallation is the better place to remove/undo something.
+	 *
+	 * @return void
 	 */
-	public function run() {
-		$this->loader->run();
+	public static function deactivate(): void {
 	}
 
+
 	/**
-	 * The name of the plugin used to uniquely identify it within the context of
-	 * WordPress and to define internationalization functionality.
+	 * Run functions on plugin uninstallation
+	 * NOTE: This is for VERY destructive operations!
+	 * There are some things that it is best practice to do on uninstallation,
+	 * for example custom database tables created by the plugin (if we had any)
+	 * should be deleted when the plugin is uninstalled from the site.
+	 * Think of this as "not using it anymore" levels of cleanup.
 	 *
-	 * @since     1.0.0
+	 * Consider carefully whether deactivation or uninstallation is the better place to remove/undo something.
+	 *
+	 * @return void
+	 */
+	public static function uninstall(): void {
+		delete_metadata('post', 0, 'breadcrumb_title_override', null, true); // TODO: This isn't working for Pages/CPTs
+		delete_option('breadcrumbs_settings');
+	}
+
+
+	/**
+	 * Utility function to get the plugin name.
+	 *
+	 * @since     1.2.0
 	 * @return    string    The name of the plugin.
 	 */
-	public function get_plugin_name() {
-		return $this->plugin_name;
+	public static function get_plugin_name(): string {
+		$plugin_data = get_plugin_data(BREADCRUMBS_PLUGIN_PATH . 'breadcrumbs.php');
+
+		return $plugin_data['Name'];
 	}
 
+
 	/**
-	 * Retrieve the version number of the plugin.
+	 * Utility function to get the plugin version number.
 	 *
 	 * @since     1.0.0
 	 * @return    string    The version number of the plugin.
 	 */
-	public function get_version() {
-		return $this->version;
-	}
-
-	/**
-	 * The reference to the class that orchestrates the hooks with the plugin.
-	 *
-	 * @since     1.0.0
-	 * @return    Breadcrumbs_Loader    Orchestrates the hooks of the plugin.
-	 */
-	public function get_loader() {
-		return $this->loader;
+	public static function get_version(): string {
+		return BREADCRUMBS_VERSION;
 	}
 
 }

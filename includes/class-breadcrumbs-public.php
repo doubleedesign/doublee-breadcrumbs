@@ -7,16 +7,21 @@
  *
  * @since      1.0.0
  * @package    Breadcrumbs
- * @subpackage Breadcrumbs/public
  */
-class Breadcrumbs_Public extends Breadcrumbs_Settings {
+class Breadcrumbs_Public {
+
+	public function __construct() {
+		add_action('doublee_breadcrumbs', array($this, 'set_breadcrumbs'), 10);
+		add_action('doublee_breadcrumbs', array($this, 'display_breadcrumbs'), 10);
+	}
+
 
 	/**
 	 * Initialise the list of breadcrumb items
 	 * @since    1.0.0
 	 * @access   protected
 	 */
-	protected $breadcrumbs = array();
+	protected array $breadcrumbs = array();
 
 
 	/**
@@ -24,7 +29,7 @@ class Breadcrumbs_Public extends Breadcrumbs_Settings {
 	 * @since    1.0.0
      * @wp-hook
 	 */
-	public function set_breadcrumbs() {
+	public function set_breadcrumbs(): void {
 
 		// Add the homepage as the first item,
 		// specifying to start the array at 1 so the index can be used in the template output without further processing
@@ -34,10 +39,10 @@ class Breadcrumbs_Public extends Breadcrumbs_Settings {
 		$this->breadcrumbs[1]['url'] = get_bloginfo('url');
 
 		// Populate the rest
-		if(is_page() && in_array('page', $this->get_breadcrumbable_post_types())) {
+		if(is_page() && in_array('page', Breadcrumbs_Settings::get_breadcrumbable_post_types())) {
 			$this->get_page_trail();
 		}
-		else if(is_singular() && in_array(get_post_type(get_the_id()), $this->get_breadcrumbable_post_types())) {
+		else if(is_singular() && in_array(get_post_type(get_the_id()), Breadcrumbs_Settings::get_breadcrumbable_post_types())) {
 			$this->get_post_trail();
 		}
 		else if(is_archive() || is_home()) {
@@ -50,7 +55,7 @@ class Breadcrumbs_Public extends Breadcrumbs_Settings {
 	 * @since    1.0.0
 	 * @return array
 	 */
-	protected function get_breadcrumbs() {
+	protected function get_breadcrumbs(): array {
 		$breadcrumbs = $this->breadcrumbs;
 
 		// Return array of breadcrumbs with the opportunity for themes to alter it with this filter, before it gets to the output stage
@@ -65,7 +70,7 @@ class Breadcrumbs_Public extends Breadcrumbs_Settings {
 	 * @param $title
 	 * @param $url
 	 */
-	private function add_breadcrumb($title, $url) {
+	private function add_breadcrumb($title, $url): void {
 		array_push($this->breadcrumbs, array(
 			'title' => $title,
 			'url'   => $url
@@ -77,7 +82,7 @@ class Breadcrumbs_Public extends Breadcrumbs_Settings {
 	 * The breadcrumb trail of a page
 	 * @since    1.0.0
 	 */
-	private function get_page_trail() {
+	private function get_page_trail(): void {
         $settings = get_option('breadcrumbs_settings');
 
 		// Check if the page has ancestors, and add those to the trail
@@ -102,7 +107,7 @@ class Breadcrumbs_Public extends Breadcrumbs_Settings {
 	 * The breadcrumb trail of a post/CPT
 	 * @since    1.0.0
 	 */
-	private function get_post_trail() {
+	private function get_post_trail(): void {
 		$post_type = get_post_type();
 		$settings = get_option('breadcrumbs_settings');
 
@@ -138,18 +143,29 @@ class Breadcrumbs_Public extends Breadcrumbs_Settings {
 			$primary_taxonomy = $settings['taxonomy_'.$post_type];
 			$terms = get_the_terms(get_the_id(), $primary_taxonomy);
 
-			// If the SEO Framework is in use, use the primary term
-			if(defined('THE_SEO_FRAMEWORK_PRESENT')) {
-				$primary_term_id = the_seo_framework()->get_primary_term_id(get_the_id(), $primary_taxonomy);
-				$primary_term = get_term_by('term_id', $primary_term_id, $primary_taxonomy);
+			// If the post has more than one term and The SEO Framework or Yoast is in use, use the primary term
+			// Otherwise, get the first/only term
+			if(count($terms) > 1) {
+				if(defined('THE_SEO_FRAMEWORK_PRESENT')) {
+					$primary_term_id = the_seo_framework()->get_primary_term_id(get_the_id(), $primary_taxonomy);
+					$primary_term = get_term_by('term_id', $primary_term_id, $primary_taxonomy);
+				}
+				else if(class_exists('WPSEO_Primary_Term')) {
+					$primary_term_class = new WPSEO_Primary_Term($primary_taxonomy, get_the_id());
+					$primary_term_id = $primary_term_class->get_primary_term();
+					$primary_term = get_term_by('term_id', $primary_term_id, $primary_taxonomy);
+				}
+				else {
+					$primary_term = $terms[0];
+					$primary_term_id = $primary_term->term_id;
+				}
 			}
-			// Otherwise, get the first term
 			else {
 				$primary_term = $terms[0];
 				$primary_term_id = $primary_term->term_id;
 			}
 
-			if($primary_term_id) {
+			if(isset($primary_term_id)) {
 				// Check if this term has ancestors, and add those to the breadcrumb list
 				$term_ancestors = get_ancestors($primary_term_id, $primary_taxonomy, 'taxonomy');
 				foreach($term_ancestors as $ancestor_id) {
@@ -178,7 +194,7 @@ class Breadcrumbs_Public extends Breadcrumbs_Settings {
 	 * The breadcrumb trail of a taxonomy term or post type archive
 	 * @since    1.0.0
 	 */
-	private function get_archive_trail() {
+	private function get_archive_trail(): void {
 		$queried_object = get_queried_object();
 		$blog_page_id = get_option('page_for_posts');
 
@@ -263,12 +279,13 @@ class Breadcrumbs_Public extends Breadcrumbs_Settings {
 		return apply_filters('breadcrumbs_filter_output', $output, $this->breadcrumbs);
 	}
 
+
 	/**
 	 * The function added to a template action for use in themes
 	 * @see class-breadcrumbs.php
 	 * @since    1.0.0
 	 */
-	public function display_breadcrumbs() {
+	public function display_breadcrumbs(): void {
 		echo $this->get_output();
 	}
 }

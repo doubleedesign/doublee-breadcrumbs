@@ -4,56 +4,57 @@
  * Description:       Allows developers to easily add breadcrumb trails to theme templates.
  * Author:            Leesa Ward
  * Plugin URI:        https://github.com/doubleedesign/breadcrumbs
- * Version:           1.1
+ * Version:           1.2.0
  * Text Domain:       breadcrumbs
  */
 
 // If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
+if(!defined('WPINC')) {
 	die;
 }
 
 /**
  * Current plugin version.
  */
-define( 'BREADCRUMBS_VERSION', '1.1.0' );
+const BREADCRUMBS_VERSION = '1.2.0';
 
 /**
- * The code that runs during plugin activation.
- * This action is documented in includes/class-breadcrumbs-activator.php
+ * Path of plugin root folder
  */
-function activate_breadcrumbs() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-breadcrumbs-activator.php';
-	Breadcrumbs_Activator::activate();
+define('BREADCRUMBS_PLUGIN_PATH', plugin_dir_path(__FILE__));
+
+/**
+ * Load and initialise the core plugin class
+ */
+require plugin_dir_path(__FILE__) . 'includes/class-breadcrumbs.php';
+new Breadcrumbs();
+
+
+/**
+ * Functions to run on plugin activation
+ * @return void
+ */
+function activate_breadcrumbs(): void {
+	Breadcrumbs::activate();
 }
-register_activation_hook( __FILE__, 'activate_breadcrumbs' );
+register_activation_hook(__FILE__, 'activate_breadcrumbs');
+
 
 /**
- * The code that runs during plugin deactivation.
- * This action is documented in includes/class-breadcrumbs-deactivator.php
+ * Functions to run on plugin deactivation
+ * @return void
  */
-function deactivate_breadcrumbs() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-breadcrumbs-deactivator.php';
-	Breadcrumbs_Deactivator::deactivate();
+function deactivate_breadcrumbs(): void {
+	Breadcrumbs::deactivate();
 }
-register_deactivation_hook( __FILE__, 'deactivate_breadcrumbs' );
+register_deactivation_hook(__FILE__, 'deactivate_breadcrumbs');
+
 
 /**
- * The core plugin class that is used to define admin-specific and public-facing site hooks.
+ * Functions to run on plugin uninstallation
+ * @return void
  */
-require plugin_dir_path( __FILE__ ) . 'includes/class-breadcrumbs.php';
-
-/**
- * Begin execution of the plugin.
- *
- * Since everything within the plugin is registered via hooks,
- * then kicking off the plugin from this point in the file does
- * not affect the page life cycle.
- *
- * @since    1.0.0
- */
-function run_breadcrumbs() {
-	$plugin = new Breadcrumbs();
-	$plugin->run();
+function uninstall_breadcrumbs(): void {
+	Breadcrumbs::uninstall();
 }
-run_breadcrumbs();
+register_uninstall_hook(__FILE__, 'uninstall_breadcrumbs');

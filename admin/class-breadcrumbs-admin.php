@@ -22,17 +22,6 @@ class Breadcrumbs_Admin extends Breadcrumbs_Settings {
 	}
 
 	/**
-	 * Register the JavaScript for the admin area.
-	 * @since    1.0.0
-	 */
-	public function enqueue_scripts() {
-
-		wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/breadcrumbs-admin.js', array('jquery'), $this->version, false);
-
-	}
-
-
-	/**
 	 * Add the options screen to the CMS
 	 * @since    1.0.0
 	 */

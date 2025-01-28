@@ -21,7 +21,7 @@ class Breadcrumbs_Admin {
 	 * @since    1.0.0
 	 */
 	public function enqueue_styles(): void {
-		wp_enqueue_style(Breadcrumbs::get_plugin_name(), '/wp-content/plugins/breadcrumbs-doublee/assets/breadcrumbs-admin.css', array(), Breadcrumbs::get_version());
+		wp_enqueue_style(Breadcrumbs::get_plugin_name(), '/wp-content/plugins/doublee-breadcrumbs/assets/breadcrumbs-admin.css', array(), Breadcrumbs::get_version());
 	}
 
 

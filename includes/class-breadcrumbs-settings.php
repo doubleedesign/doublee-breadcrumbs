@@ -1,4 +1,6 @@
 <?php
+namespace Doubleedesign\Breadcrumbs;
+
 /**
  * Plugin settings.
  *

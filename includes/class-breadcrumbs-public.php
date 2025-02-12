@@ -1,4 +1,6 @@
 <?php
+namespace Doubleedesign\Breadcrumbs;
+
 /**
  * The public-facing functionality of the plugin.
  *
@@ -61,6 +63,18 @@ class Breadcrumbs_Public {
 		// Return array of breadcrumbs with the opportunity for themes to alter it with this filter, before it gets to the output stage
 		// Allows devs to alter the breadcrumb trail without overriding the HTML output
 		return apply_filters('breadcrumbs_filter_list', $breadcrumbs);
+	}
+
+	/**
+	 * Option for developers to get the raw array to use in their own output
+	 * Get from the main Breadcrumbs object like so:
+	 * $yourVariable = Breadcrumbs::$instance->get_raw_breadcrumbs()
+	 * @return array
+	 */
+	public function get_raw_breadcrumbs(): array {
+		$this->set_breadcrumbs();
+
+		return $this->get_breadcrumbs();
 	}
 
 

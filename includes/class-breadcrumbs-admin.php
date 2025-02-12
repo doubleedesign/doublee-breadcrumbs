@@ -1,4 +1,5 @@
 <?php
+namespace Doubleedesign\Breadcrumbs;
 /**
  * The admin-specific functionality of the plugin.
  *

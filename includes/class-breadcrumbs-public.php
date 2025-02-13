@@ -80,15 +80,25 @@ class Breadcrumbs_Public {
 
 	/**
 	 * Utility function to add an item to the $breadcrumbs array
-	 * @since    1.0.0
-	 * @param $title
-	 * @param $url
+	 * @param string $title
+	 * @param string $url
+	 * @param bool $current
+	 *@since    1.0.0
 	 */
-	private function add_breadcrumb($title, $url): void {
-		array_push($this->breadcrumbs, array(
-			'title' => $title,
-			'url'   => $url
-		));
+	private function add_breadcrumb(string $title, string $url, bool $current = false): void {
+		if($current) {
+			array_push($this->breadcrumbs, array(
+				'title' => $title,
+				'url'   => $url,
+				'current' => true,
+			));
+		}
+		else {
+			array_push($this->breadcrumbs, array(
+				'title' => $title,
+				'url'   => $url,
+			));
+		}
 	}
 
 
@@ -113,8 +123,8 @@ class Breadcrumbs_Public {
 
 		// Add the page title, with no link
 		$page_title_override = get_post_meta(get_the_id(), 'breadcrumb_title_override', true);
-		$page_title = $page_title_override ? $page_title_override : get_the_title(get_the_id());
-		$this->add_breadcrumb($page_title, '');
+		$page_title = $page_title_override ?: get_the_title(get_the_id());
+		$this->add_breadcrumb($page_title, '#', true);
 	}
 
 	/**
@@ -131,7 +141,7 @@ class Breadcrumbs_Public {
 				$blog_page_id = get_option('page_for_posts');
 				$archive_url   = get_the_permalink($blog_page_id);
 				$title_override = get_post_meta(get_the_id(), 'breadcrumb_title_override', true);
-				$archive_title = $title_override ? $title_override : get_the_title($blog_page_id);
+				$archive_title = $title_override ?: get_the_title($blog_page_id);
 				$this->add_breadcrumb($archive_title, $archive_url);
 			}
 		}
@@ -198,10 +208,10 @@ class Breadcrumbs_Public {
 			$this->add_breadcrumb(get_the_title($ancestor_id), get_the_permalink($ancestor_id));
 		}
 
-		// Add the post title, with no link
+		// Add the post title
 		$post_title_override = get_post_meta(get_the_id(), 'breadcrumb_title_override', true);
-		$post_title = $post_title_override ? $post_title_override : get_the_title(get_the_id());
-		$this->add_breadcrumb($post_title, '');
+		$post_title = $post_title_override ?: get_the_title(get_the_id());
+		$this->add_breadcrumb($post_title, '#', true);
 	}
 
 	/**
@@ -236,11 +246,11 @@ class Breadcrumbs_Public {
 					$this->add_breadcrumb('Author: ' . $queried_object->data->display_name, '');
 					break;
 
-				// Blog page: Add the blog page label as the last item (no link)
+				// Blog page: Add the blog page label as the last item
 				// Use the default if another archive type is an instance of WP_Post
 				case 'WP_Post':
 					if($queried_object->ID == $blog_page_id) {
-						$this->add_breadcrumb( get_the_title( $blog_page_id ), '' );
+						$this->add_breadcrumb(get_the_title($blog_page_id), '');
 					} else {
 						$this->add_breadcrumb(get_the_archive_title(), '');
 					}

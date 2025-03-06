@@ -110,7 +110,7 @@ class Breadcrumbs_Public {
         $settings = get_option('breadcrumbs_settings');
 
 		// Check if the page has ancestors, and add those to the trail
-		$page_ancestors = get_ancestors(get_the_id(), 'page');
+		$page_ancestors = array_reverse(get_ancestors(get_the_id(), 'page'));
 		foreach($page_ancestors as $ancestor_id) {
 			$this->add_breadcrumb(get_the_title($ancestor_id), get_the_permalink($ancestor_id));
 		}

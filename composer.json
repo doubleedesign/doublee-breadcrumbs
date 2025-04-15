@@ -1,0 +1,12 @@
+{
+	"name": "doubleedesign/doublee-breadcrumbs",
+	"type": "wordpress-plugin",
+	"version": "1.2.1",
+	"homepage": "https://github.com/doubleedesign/doublee-breadcrumbs",
+	"authors": [
+		{
+			"name": "Leesa Ward",
+			"email": "leesa@doubleedesign.com.au"
+		}
+	]
+}

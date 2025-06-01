@@ -1,10 +1,11 @@
 <?php
+namespace Doubleedesign\Breadcrumbs;
 /**
  * Plugin Name:       Breadcrumbs
  * Description:       Allows developers to easily add breadcrumb trails to theme templates.
  * Author:            Leesa Ward
- * Plugin URI:        https://github.com/doubleedesign/breadcrumbs
- * Version:           1.2.1
+ * Plugin URI:        https://github.com/doubleedesign/doublee-breadcrumbs
+ * Version:           2.0.0
  * Text Domain:       breadcrumbs
  */
 
@@ -16,7 +17,7 @@ if(!defined('WPINC')) {
 /**
  * Current plugin version.
  */
-const BREADCRUMBS_VERSION = '1.2.1';
+const BREADCRUMBS_VERSION = '2.0.0';
 
 /**
  * Path of plugin root folder
@@ -24,10 +25,14 @@ const BREADCRUMBS_VERSION = '1.2.1';
 define('BREADCRUMBS_PLUGIN_PATH', plugin_dir_path(__FILE__));
 
 /**
- * Load and initialise the core plugin class
+ * Load Composer autoloader
  */
-require plugin_dir_path(__FILE__) . 'includes/class-breadcrumbs.php';
-new Doubleedesign\Breadcrumbs\Breadcrumbs();
+require_once plugin_dir_path(__FILE__) . 'vendor/autoload.php';
+
+/**
+ * Initialize the core plugin class
+ */
+new Breadcrumbs();
 
 
 /**
@@ -35,7 +40,7 @@ new Doubleedesign\Breadcrumbs\Breadcrumbs();
  * @return void
  */
 function activate_breadcrumbs(): void {
-	Doubleedesign\Breadcrumbs\Breadcrumbs::activate();
+	Breadcrumbs::activate();
 }
 register_activation_hook(__FILE__, 'activate_breadcrumbs');
 
@@ -45,7 +50,7 @@ register_activation_hook(__FILE__, 'activate_breadcrumbs');
  * @return void
  */
 function deactivate_breadcrumbs(): void {
-	Doubleedesign\Breadcrumbs\Breadcrumbs::deactivate();
+	Breadcrumbs::deactivate();
 }
 register_deactivation_hook(__FILE__, 'deactivate_breadcrumbs');
 
@@ -55,6 +60,6 @@ register_deactivation_hook(__FILE__, 'deactivate_breadcrumbs');
  * @return void
  */
 function uninstall_breadcrumbs(): void {
-	Doubleedesign\Breadcrumbs\Breadcrumbs::uninstall();
+	Breadcrumbs::uninstall();
 }
 register_uninstall_hook(__FILE__, 'uninstall_breadcrumbs');

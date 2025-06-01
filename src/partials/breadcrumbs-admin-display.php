@@ -1,15 +1,15 @@
 <?php
-use Doubleedesign\Breadcrumbs\Breadcrumbs_Settings;
+namespace Doubleedesign\Breadcrumbs;
+
 /**
- * Provide a admin area view for the plugin
- * This file is used to markup the admin-facing aspects of the plugin.
+ * Provide an admin area view for the plugin
  *
  * @since      1.0.0
  * @package    Breadcrumbs
  */
 
-$post_types = Breadcrumbs_Settings::get_breadcrumbable_post_types();
-$taxonomies = Breadcrumbs_Settings::get_breadcrumbable_taxonomies();
+$post_types = Settings::get_breadcrumbable_post_types();
+$taxonomies = Settings::get_breadcrumbable_taxonomies();
 $current_settings = get_option('breadcrumbs_settings');
 ?>
 

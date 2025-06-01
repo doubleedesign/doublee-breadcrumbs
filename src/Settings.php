@@ -7,7 +7,7 @@ namespace Doubleedesign\Breadcrumbs;
  * @since      1.0.0
  * @package    Breadcrumbs
  */
-class Breadcrumbs_Settings {
+class Settings {
 
 	public function __construct() {
 	}

@@ -1,6 +1,13 @@
 <?php /** @noinspection t */
 namespace Doubleedesign\Breadcrumbs;
 
+use Doubleedesign\Breadcrumbs\WPSEO_Primary_Term;
+use function Doubleedesign\Breadcrumbs\is_account_page;
+use function Doubleedesign\Breadcrumbs\is_cart;
+use function Doubleedesign\Breadcrumbs\is_checkout;
+use function Doubleedesign\Breadcrumbs\is_wc_endpoint_url;
+use function Doubleedesign\Breadcrumbs\the_seo_framework;
+
 /**
  * The public-facing functionality of the plugin.
  *
@@ -10,7 +17,7 @@ namespace Doubleedesign\Breadcrumbs;
  * @since      1.0.0
  * @package    Breadcrumbs
  */
-class Breadcrumbs_Public {
+class Frontend {
 
 	public function __construct() {
 		add_action('doublee_breadcrumbs', array($this, 'set_breadcrumbs'), 10);
@@ -41,10 +48,10 @@ class Breadcrumbs_Public {
 		$this->breadcrumbs[1]['url'] = get_bloginfo('url');
 
 		// Populate the rest
-		if(is_page() && in_array('page', Breadcrumbs_Settings::get_breadcrumbable_post_types())) {
+		if(is_page() && in_array('page', Settings::get_breadcrumbable_post_types())) {
 			$this->get_page_trail();
 		}
-		else if(is_singular() && in_array(get_post_type(get_the_id()), Breadcrumbs_Settings::get_breadcrumbable_post_types())) {
+		else if(is_singular() && in_array(get_post_type(get_the_id()), Settings::get_breadcrumbable_post_types())) {
 			$this->get_post_trail();
 		}
 		else if(is_archive() || is_home()) {

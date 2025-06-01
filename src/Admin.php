@@ -1,5 +1,6 @@
 <?php
 namespace Doubleedesign\Breadcrumbs;
+
 /**
  * The admin-specific functionality of the plugin.
  *
@@ -8,7 +9,7 @@ namespace Doubleedesign\Breadcrumbs;
  *
  * @since      1.0.0
  */
-class Breadcrumbs_Admin {
+class Admin {
 
 	public function __construct() {
 		add_action('admin_enqueue_scripts', array($this, 'enqueue_styles'));
@@ -47,7 +48,7 @@ class Breadcrumbs_Admin {
 	 * @since    1.0.0
 	 */
 	public function populate_options_screen(): void {
-		require_once 'partials/breadcrumbs-admin-display.php';
+		require_once __DIR__ . '/partials/breadcrumbs-admin-display.php';
 	}
 
 
@@ -75,7 +76,7 @@ class Breadcrumbs_Admin {
 	public function register_post_meta_boxes(): void {
 
 		// Loop through the enabled post types and add the metabox to each
-		$enabled_post_types = Breadcrumbs_Settings::get_breadcrumbable_post_types();
+		$enabled_post_types = Settings::get_breadcrumbable_post_types();
 		foreach($enabled_post_types as $post_type) {
 			add_meta_box('breadcrumb-settings', __('Breadcrumb settings', 'breadrcumbs'), array($this, 'populate_breadcrumbs_metabox'), $post_type, 'side', 'core');
 		}

@@ -12,3 +12,12 @@ Allows developers to easily add breadcrumb trails to theme templates in classic 
 * Global settings for how breadcrumb trails are built can be found in Settings > Breadcrumbs.
 * You can override the title shown in the breadcrumb trail at the post level, in the Breadcrumb Settings metabox.
 * Filters are provided so developers can modify which post types and taxonomies have breadcrumbs, and modify the HTML output. Details can be found in the settings screen. 
+
+
+---
+## Changelog
+
+### 2.0.0
+
+- Refactored to use PSR-4 autoloading
+- Added unit tests

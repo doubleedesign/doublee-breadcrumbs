@@ -1,7 +1,7 @@
 {
 	"name": "doubleedesign/doublee-breadcrumbs",
 	"type": "wordpress-plugin",
-	"version": "1.2.1",
+	"version": "2.0.0",
 	"homepage": "https://github.com/doubleedesign/doublee-breadcrumbs",
 	"authors": [
 		{
@@ -9,4 +9,9 @@
 			"email": "leesa@doubleedesign.com.au"
 		}
 	]
+	"autoload": {
+		"psr-4": {
+			"Doubleedesign\\Breadcrumbs\\": "src/"
+		}
+	},
 }

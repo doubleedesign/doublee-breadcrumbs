@@ -1,5 +1,6 @@
 <?php
 namespace Doubleedesign\Breadcrumbs;
+
 /**
  * The core plugin class.
  *
@@ -10,7 +11,7 @@ namespace Doubleedesign\Breadcrumbs;
  * @package    Breadcrumbs
  */
 class Breadcrumbs {
-	public static Breadcrumbs_Public $instance;
+	public static Frontend $instance;
 
 	/**
 	 * Set up the core functionality of the plugin in the constructor
@@ -32,18 +33,14 @@ class Breadcrumbs {
 	 * @access   private
 	 */
 	private function load_classes(): void {
-
 		// The class responsible for plugin-wide settings; parent class for the Admin and Public classes
-		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-breadcrumbs-settings.php';
-		new Breadcrumbs_Settings();
+		new Settings();
 
 		// The class responsible for defining actions that occur in the admin area
-		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-breadcrumbs-admin.php';
-		new Breadcrumbs_Admin();
+		new Admin();
 
 		// The class responsible for defining actions that occur on the front-end
-		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-breadcrumbs-public.php';
-		self::$instance = new Breadcrumbs_Public();
+		self::$instance = new Frontend();
 	}
 
 

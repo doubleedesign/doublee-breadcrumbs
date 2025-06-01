@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection t */
 namespace Doubleedesign\Breadcrumbs;
 
 /**
@@ -237,7 +237,7 @@ class Breadcrumbs_Public {
 					break;
 
 				// Post type archive: Add the post type label as the last item (no link)
-				case 'WP_Post_type':
+				case 'WP_Post_Type':
 					$this->add_breadcrumb($queried_object->label, '');
 					break;
 

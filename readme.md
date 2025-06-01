@@ -1,5 +1,5 @@
 # A WordPress Breadcrumbs plugin
-Allows developers to easily add breadcrumb trails to theme templates in classic themes. (Not developed for or tested with block themes.)
+Allows developers to easily add breadcrumb trails to theme templates in classic themes. (Not developed for or tested with block themes, other than being hard-coded into the PHP render function of a custom block.)
 
 ## Installation
 

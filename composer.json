@@ -8,10 +8,21 @@
 			"name": "Leesa Ward",
 			"email": "leesa@doubleedesign.com.au"
 		}
-	]
+	],
+	"require-dev": {
+		"pestphp/pest": "^3.8.2",
+		"10up/wp_mock": "^0.4.2",
+		"roots/wordpress": "^6.8"
+	},
 	"autoload": {
 		"psr-4": {
 			"Doubleedesign\\Breadcrumbs\\": "src/"
 		}
 	},
+	"config": {
+		"allow-plugins": {
+			"pestphp/pest-plugin": true,
+			"roots/wordpress-core-installer": true
+		}
+	}
 }

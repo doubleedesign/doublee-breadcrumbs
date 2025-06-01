@@ -16,10 +16,10 @@ class Settings {
 	 * Filterable list of all the post types to add settings for
 	 * @since    1.2.0
 	 */
-	public static function get_breadcrumbable_post_types() {
+	public static function get_breadcrumbable_post_types(): array {
 
 		// Get all post types in the site
-		$post_types = get_post_types();
+		$post_types = \get_post_types();
 
 		// Specify the ones we know we won't be adding breadcrumbs to,
         // like ACF groups, nav menu items, block editor stuff, and some WooCommerce stuff.
@@ -57,10 +57,10 @@ class Settings {
 
 
 	/**
-	 * Filterable list of all the the taxonomies to add settings for
+	 * Filterable list of all the taxonomies to add settings for
 	 * @since    1.2.0
 	 */
-	public static function get_breadcrumbable_taxonomies() {
+	public static function get_breadcrumbable_taxonomies(): array {
 
 		// Get all taxonomies in the site
 		$taxonomies = get_taxonomies();

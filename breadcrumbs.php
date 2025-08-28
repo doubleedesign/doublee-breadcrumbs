@@ -1,5 +1,4 @@
 <?php
-namespace Doubleedesign\Breadcrumbs;
 /**
  * Plugin Name:       Breadcrumbs
  * Description:       Allows developers to easily add breadcrumb trails to theme templates.
@@ -8,6 +7,7 @@ namespace Doubleedesign\Breadcrumbs;
  * Version:           2.0.0
  * Text Domain:       breadcrumbs
  */
+use Doubleedesign\Breadcrumbs\Breadcrumbs;
 
 // If this file is called directly, abort.
 if(!defined('WPINC')) {
@@ -39,27 +39,27 @@ new Breadcrumbs();
  * Functions to run on plugin activation
  * @return void
  */
-function activate_breadcrumbs(): void {
+function doublee_activate_breadcrumbs(): void {
 	Breadcrumbs::activate();
 }
-register_activation_hook(__FILE__, 'activate_breadcrumbs');
+register_activation_hook(__FILE__, 'doublee_activate_breadcrumbs');
 
 
 /**
  * Functions to run on plugin deactivation
  * @return void
  */
-function deactivate_breadcrumbs(): void {
+function doublee_deactivate_breadcrumbs(): void {
 	Breadcrumbs::deactivate();
 }
-register_deactivation_hook(__FILE__, 'deactivate_breadcrumbs');
+register_deactivation_hook(__FILE__, 'doublee_deactivate_breadcrumbs');
 
 
 /**
  * Functions to run on plugin uninstallation
  * @return void
  */
-function uninstall_breadcrumbs(): void {
+function doublee_uninstall_breadcrumbs(): void {
 	Breadcrumbs::uninstall();
 }
-register_uninstall_hook(__FILE__, 'uninstall_breadcrumbs');
+register_uninstall_hook(__FILE__, 'doublee_uninstall_breadcrumbs');

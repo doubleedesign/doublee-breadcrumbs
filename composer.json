@@ -11,8 +11,7 @@
 	],
 	"require-dev": {
 		"pestphp/pest": "^3.8.2",
-		"10up/wp_mock": "^0.4.2",
-		"roots/wordpress": "^6.8"
+		"brain/monkey": "^2.6"
 	},
 	"autoload": {
 		"psr-4": {
@@ -21,8 +20,7 @@
 	},
 	"config": {
 		"allow-plugins": {
-			"pestphp/pest-plugin": true,
-			"roots/wordpress-core-installer": true
+			"pestphp/pest-plugin": true
 		}
 	}
 }

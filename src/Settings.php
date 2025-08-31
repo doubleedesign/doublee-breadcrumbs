@@ -19,7 +19,7 @@ class Settings {
 	public static function get_breadcrumbable_post_types(): array {
 
 		// Get all post types in the site
-		$post_types = \get_post_types();
+		$post_types = get_post_types();
 
 		// Specify the ones we know we won't be adding breadcrumbs to,
         // like ACF groups, nav menu items, block editor stuff, and some WooCommerce stuff.

@@ -1,3 +1,4 @@
 wordpress
 vendor/**/
 !vendor/autoload.php
+tests/.phpunit.result.cache

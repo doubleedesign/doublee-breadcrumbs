@@ -44,6 +44,7 @@ class Settings {
             'product_variation',
             'shop_order',
             'shop_order_refund',
+			'shop_subscription',
             'shop_order_placehold',
             'shop_coupon',
             'event_ticket',

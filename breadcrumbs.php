@@ -4,7 +4,7 @@
  * Description:       Allows developers to easily add breadcrumb trails to theme templates.
  * Author:            Leesa Ward
  * Plugin URI:        https://github.com/doubleedesign/doublee-breadcrumbs
- * Version:           2.0.0
+ * Version:           2.1.0
  * Text Domain:       breadcrumbs
  */
 use Doubleedesign\Breadcrumbs\Breadcrumbs;
@@ -17,7 +17,7 @@ if(!defined('WPINC')) {
 /**
  * Current plugin version.
  */
-const BREADCRUMBS_VERSION = '2.0.0';
+const BREADCRUMBS_VERSION = '2.1.0';
 
 /**
  * Path of plugin root folder
